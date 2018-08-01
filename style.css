@@ -1,0 +1,171 @@
+
+body {margin-left:auto; margin-right:auto;} 
+a:link {color: 999999; text-decoration:none;}
+a:visited {color:999999;text-decoration:none;}
+a:hover {color:#CCCCCC;}
+a:active {color:999999; text-decoration:none;}
+
+tbody, tr, td{
+padding: 0px;
+}
+
+#headingwrapper{
+width: 100%;
+margin-left:7%;
+padding-top: 20px;
+float:left;
+font-family:"Raleway Dots", san serif;
+font-size: 20px;
+position: fixed;
+}
+
+
+#leftwrapper{
+width: 575px;
+padding: 20px;
+border-style:solid;
+border-color: black;
+border-width: 1px;
+float:left;
+font-family:"Raleway Dots", san serif;
+font-size: 40px;
+}
+
+.canvaswrapper{
+width: 35%;
+margin-left: auto;
+margin-right: auto;
+margin-top: 5%;
+}
+
+#aboutwrapper{
+width:550px;
+padding-left: auto;
+padding-right: auto;
+font-family:"Raleway Dots", san serif;
+font-size: 20px;
+background-color: white;
+z-index: 999;
+}
+
+.aboutlink{
+text-align:center;
+font-family:"Raleway Dots", san serif;
+font-size: 20px;
+}
+
+#ruleswrapper{
+border-style:solid;
+border-color: black;
+border-width: 1px;
+width:350px;
+float:right;
+font-family: 'EB Garamond', serif;
+font-size: 80px;
+padding:20px;
+text-align: center;
+}
+
+p{
+margin-left:auto;
+margin-right:auto;
+}
+
+.paragraphabout{
+color: black;
+background-color: white;
+width: 550px;
+padding: 10px;
+overflow: auto;
+border-style:none;
+float:left;
+font-family:"Raleway Dots", san serif;
+font-size: 15px;
+z-index: 999;
+}
+
+img.center{
+display:block; margin-left:auto; margin-right:auto;
+}
+
+.white{
+color: CCCCCC;
+text-align: center;
+}
+
+.quotes{
+color:black;
+}
+
+.answer1{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:12px;
+font-weight:normal;
+}
+
+.answertitle1{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:18px;
+font-variant: small-caps;
+}
+
+.answer2{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:12px;
+font-weight:normal;
+}
+
+.answertitle2{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:18px;
+font-variant: small-caps;
+}
+
+
+.answer3{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:12px;
+font-weight:normal;
+}
+
+.answertitle3{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:18px;
+font-variant: small-caps;
+}
+
+.answer4{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:12px;
+font-weight:normal;
+}
+
+.answertitle4{
+color: black;
+text-align: center;
+text-decoration: none;
+font-family:"Georgia", serif;
+font-size:18px;
+font-variant: small-caps;
+}
