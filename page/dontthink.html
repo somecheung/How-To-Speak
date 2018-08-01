@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../style.css"/>
+<link href='http://fonts.googleapis.com/css?family=Raleway+Dots' rel='stylesheet' type='text/css'>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="canvaswrapper">       
+<canvas id="canvas" width="500px" height="250px" style="display:block;"></canvas>
+<canvas id="canvas_tip" width="500px" height="250px" style="display:block;"></canvas>
+</div>
+
+<script type="text/javascript">
+
+	var context;
+    var audioBuffer;
+    var sourceNode;
+    var sourceNode1;
+    var analyser;
+    var analyser1;
+    var javascriptNode;
+    var javascriptNode1;
+    var spectrumArray = new Uint8Array();
+    var xScaling =  4;
+    	
+	window.addEventListener('load', init, false);
+ function init() {
+ 
+      console.log("begin init");
+	  try {
+		// Fix up for prefixing
+		window.AudioContext = window.AudioContext||window.webkitAudioContext;
+		context = new AudioContext();
+		console.log("hello??");
+	  }
+	  catch(e) {
+		alert('Web Audio API is not supported in this browser');
+		console.log("Web Audio API is not supported in this browser");
+	  }
+	
+
+    
+	// get the context from the canvas to draw on
+    var ctx = $("#canvas").get()[0].getContext("2d");
+    var ctx_tip = $("#canvas_tip").get()[0].getContext("2d");
+ 
+	var gradient = ctx.createLinearGradient(0,0,170,0);
+	gradient.addColorStop("0", "HotPink");
+	gradient.addColorStop("0.5", "DeepPink");
+	gradient.addColorStop("1.0", "LightPink");
+	
+	var gradient2 = ctx.createLinearGradient(0,0,170,0);
+	gradient2.addColorStop("0", "HotPink");
+	gradient2.addColorStop("0.5", "DeepPink");
+	gradient2.addColorStop("1.0", "LightPink");
+ 
+    // create a gradient for the fill. Note the strange
+    // offset, since the gradient is calculated based on
+    // the canvas, not the specific element we draw
+   // var gradient = ctx.createLinearGradient(0,0,0,130);
+    var gradient_tip = ctx_tip.createLinearGradient(0,550,0,130);     
+
+	// load the specified sound
+    // load the sound
+	setupAudioNodes();
+    loadSound("audio/butidontthinklikethat.mp3");
+  	requestAnimationFrame(drawSpectrum);
+
+	
+	javascriptNode.onaudioprocess = function() {
+ 			/*
+			// get the average for the first channel
+			array =  new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(array);
+
+			// clear the current state
+			//ctx.clearRect(0, 0, 1000, 525);
+ 
+			// set the fill style
+			//ctx.fillStyle=gradient;
+			//drawSpectrum(array); 
+		
+			// clear the current state
+			ctx_tip.clearRect(0,0,1000,525);
+ 
+			// set the fill style
+			ctx_tip.fillStyle=gradient_tip;
+			drawSpectrum(array);
+			*/
+			
+			
+			// get the average for the first channel
+			spectrumArray =  new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(spectrumArray);
+
+	}    
+
+function setupAudioNodes() {
+ 
+        // setup a javascript node
+        javascriptNode = context.createScriptProcessor(2048, 1, 1);
+        // connect to destination, else it isn't called
+        javascriptNode.connect(context.destination);
+ 
+        // setup a analyzer
+        analyser = context.createAnalyser();
+        analyser.smoothingTimeConstant = 0.3;
+        analyser.fftSize = 256;
+
+        // create a buffer source node
+        sourceNode = context.createBufferSource();
+        sourceNode.connect(analyser);
+
+        // we use the javascript node to draw at a
+        // specific interval.
+        analyser.connect(javascriptNode);
+        sourceNode.connect(context.destination);
+}
+    
+
+  //--------------------------------------
+
+function loadSound(url) {
+      /*  var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+ 
+        // When loaded decode the data
+        request.onload = function() {
+ 
+            // decode the data
+            context.decodeAudioData(request.response, function(buffer) {
+                // when the audio is decoded play the sound
+                playSound(buffer);
+            }, onError);
+        }
+        request.send();
+    */
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", url, true);
+	xhr.responseType = "arraybuffer";
+	
+	xhr.onload = function() {
+	  context.decodeAudioData(xhr.response, function onSuccess(decodedBuffer) {
+		// Decoding was successful, do something useful with the audio buffer
+		playSound(decodedBuffer);
+	  }, function onFailure() {
+		alert("Decoding the audio buffer failed");
+	  });
+	};  
+	xhr.send();  
+}
+
+
+ function playSound(buffer) {
+        sourceNode.buffer = buffer;
+        sourceNode.start(0);
+}
+ //--------------------------------------
+
+    // log if an error occurs
+function onError(e) {
+        console.log(e);
+}
+    
+ //--------------------------------------
+
+
+//--------------------------------------
+
+function drawSpectrum() {
+
+	// clear the current state
+	ctx.clearRect(0, 0, 1000, 525);
+	ctx_tip.clearRect(0,0,1000,525); 
+
+			// set the fill style
+	//ctx.fillStyle=gradient;
+	//ctx_tip.fillStyle=gradient_tip;
+
+	//---------------begin drawing----
+	ctx.beginPath();
+	ctx.moveTo(0,623);
+	
+	ctx_tip.beginPath();
+	ctx_tip.moveTo(0,0);
+			
+
+			
+    for ( var i = 0; i < (spectrumArray.length); i++ ){
+            var value = spectrumArray[i];
+
+            ctx.lineTo(i*xScaling,250-value);
+			ctx.strokeStyle = gradient;
+			ctx.stroke();
+			
+			ctx_tip.lineTo(i*xScaling, value);
+			ctx_tip.strokeStyle = gradient2;
+			ctx_tip.stroke();
+        }
+	var fps = 30;
+    setTimeout(function() {
+        requestAnimationFrame(drawSpectrum);
+        // Drawing code goes here
+    }, 1000 / fps)        
+   //requestAnimationFrame(drawSpectrum);
+
+        
+ }
+ //--------------------------------------
+}//------------------
+</script>
+
+<br>
+<div class="aboutlink">
+<a class= "aboutlink" id="back" href="http://howtospeakenglishlikeacantonese.com/" >
+back
+</a>
+</div>
+</body>
+</html>
+
+
+
