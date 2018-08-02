@@ -36,10 +36,8 @@ $(document).ready(function(){
 		$("#answer4").slideToggle("slow");
 		$("#answertitle4").slideToggle("slow");
 	})
-});
 
-$(document).ready(function(){
-		$("#about").hide();
+	$("#about").hide();
   		document.getElementById("aboutlink").onclick = function(){
     		$("#about").toggle(1000);
     		$("#aboutbook").hide();
@@ -52,5 +50,4 @@ $(document).ready(function(){
     		$("#about").hide();
 		return false;
 		}; 
-		
 });
